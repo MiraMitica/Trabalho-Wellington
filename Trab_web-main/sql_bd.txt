@@ -1,58 +1,40 @@
+CREATE DATABASE IF NOT EXISTS sorveteria;
+USE sorveteria;
 show databases;
 
-create schema Sorveteria;
-use Sorveteria;
-
-show tables;
-
--- Tabelas
-
-CREATE TABLE Cliente (
-    ClienteID INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(100) NOT NULL,
-    Endereço VARCHAR(200) NOT NULL,
-    Telefone VARCHAR(20) NOT NULL
+-- Tabela de usuários
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL
 );
 
--- 
-CREATE TABLE Produto (
-    ProdutoID INT PRIMARY KEY AUTO_INCREMENT,
-    NomeP VARCHAR(200) NOT NULL,
-    Descrição VARCHAR(300),
-    Preço DECIMAL(11,2) NOT NULL
+-- Tabela de produtos (sabores de sorvete)
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    image VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Pedido (
-    PedidoID INT PRIMARY KEY AUTO_INCREMENT,
-    Nome VARCHAR(100) NOT NULL,
-    Qntd INT NOT NULL,
-    Tipo VARCHAR(45),
-    Adicional VARCHAR(45),
-    ClienteID INT,
-    
-    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+-- Tabela de pedidos
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    items TEXT NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE Pagamento (
-    PagamentoID INT PRIMARY KEY AUTO_INCREMENT,
-    Boleto VARCHAR(200),
-    CartãoCredito INT, 
-    CartãoDabito INT,
-    PIX VARCHAR(200),
-    Endereço int, 
-    
-    FOREIGN KEY (Endereço) REFERENCES Cliente(ClienteID)
-);
-
-
--- Dados
-
-INSERT INTO Cliente (Nome, Endereço, Telefone) VALUES ('NATHY', 'RUA PERRELLA 55', '11045632');
-INSERT INTO Cliente (Nome, Endereço, Telefone) VALUES ('XOVIANHA', 'RUA CASA DA SOGRA 666', '11 69696969');
-
-INSERT INTO Produto (NomeP, Descrição, Preço) VALUES (1, 'CASQUINHA CHOCO', 'CROCANTE CASQUINHA COM DUAS BOLAS DE CHOCOLATE', '2,25');
-
-INSERT INTO Pedido () VALUE ();
-
-
-SHOW COLUMNS FROM Cliente;
+-- Inserir produtos na tabela products
+INSERT INTO products (nome, price, image) VALUES
+('Baunilha', 100.00, '/static/Bacio-di-Latte.webp'),
+('Chocolate', 150.00, '/static/Cioccolato-Belga.webp'),
+('Doce de Leite', 200.00, '/static/Doce-de-Leite.webp'),
+('Morango', 100.00, '/static/Fragola.webp'),
+('Pistache', 150.00, '/static/Mousse-di-Pistacchio.webp'),
+('Creme de Avelã', 200.00, '/static/creme-de-avela.webp'),
+('Morango', 100.00, '/static/Fragola.webp'),
+('Coco', 150.00, '/static/Cocco.webp'),
+('Manga', 200.00, '/static/Dolce-Mango.webp');
